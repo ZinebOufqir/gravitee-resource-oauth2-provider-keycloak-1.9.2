@@ -1,0 +1,74 @@
+= Gravitee.io - keycloak Adapter Resource
+
+ifdef::env-github[]
+image:https://img.shields.io/static/v1?label=Available%20at&message=Gravitee.io&color=1EC9D2["Gravitee.io", link="https://download.gravitee.io/#graviteeio-apim/plugins/resources/gravitee-resource-oauth2-provider-keycloak/"]
+image:https://img.shields.io/badge/License-Apache%202.0-blue.svg["License", link="https://github.com/gravitee-io/gravitee-resource-oauth2-provider-keycloak/blob/master/LICENSE.txt"]
+image:https://img.shields.io/badge/semantic--release-conventional%20commits-e10079?logo=semantic-release["Releases", link="https://github.com/gravitee-io/gravitee-resource-oauth2-provider-keycloak/releases"]
+image:https://circleci.com/gh/gravitee-io/gravitee-resource-oauth2-provider-keycloak.svg?style=svg["CircleCI", link="https://circleci.com/gh/gravitee-io/gravitee-resource-oauth2-provider-keycloak"]
+image:https://f.hubspotusercontent40.net/hubfs/7600448/gravitee-github-button.jpg["Join the community forum", link="https://community.gravitee.io?utm_source=readme", height=20]
+endif::[]
+
+== Description
+
+The Keycloak adapter resource is defined to introspect an access token provided by Keycloak.
+
+If the `validateTokenLocally` configuration property is true, the incoming access token is validated without having to invoke en introspection endpoint.
+If not, the resource is calling the introspection endpoint at `http://keycloak_host:port/auth/realms/{realmName}/protocol/openid-connect/token/introspect`.
+
+== Configuration
+
+You can configure the resource with the following options :
+
+|===
+|Property |Required |Description |Type |Default
+
+.^|keycloakConfiguration
+^.^|X
+|Keycloak OIDC JSON client adapter configuration
+^.^|string
+^.^|-.
+
+^|validateTokenLocally
+^.^|X
+|Is access token validated locally using realm public keys
+^.^|boolean
+^.^|true
+
+^|verifyHost
+^.^|X
+|Whether host should be verified during SSL handshake
+^.^|boolean
+^.^|false
+
+^|trustAll
+^.^|X
+|If all certificates should be accepted during SSL handshake
+^.^|boolean
+^.^|true
+
+|===
+
+
+[source, json]
+.Configuration example
+----
+{
+    "configuration" : {
+        "keycloakConfiguration":
+            "{
+                "realm": "gravitee",  
+                "auth-server-url": "http://localhost:8080/auth",
+                "ssl-required": "external",
+                "resource": "gravitee",
+                "credentials": {  
+                    "secret": "f1c9ff64-abcf-4671-9ddb-4fe4a172390d"
+                },
+                "confidential-port": 0,
+                "policy-enforcer": {}
+            }"
+        },
+        "validateTokenLocally": true,
+        "verifyHost": false,
+        "trustAll": true
+}
+----
